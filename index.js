@@ -7,9 +7,12 @@ const port = 3000;
 // Middleware to parse JSON bodies
 app.use(express.json());
 
-// Basic route for the homepage
-app.get('/', (req, res) => {
-    res.send('Hello, World!');
+// Health check endpoint
+app.get('/api/v1/health', (req, res) => {
+    res.json({
+        status: 'ok',
+        timestamp: new Date().toISOString()
+    });
 });
 
 // Route to get all users (example)
