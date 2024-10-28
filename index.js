@@ -52,7 +52,10 @@ app.delete('/users/:id', (req, res) => {
     res.status(204).send();
 });
 
-// Start the server
-app.listen(port, () => {
-    console.log(`Server is running on http://localhost:${port}`);
-});
+if (require.main === module) {
+    app.listen(port, () => {
+        console.log(`Server is running on http://localhost:${port}`);
+    });
+}
+
+module.exports = app;
