@@ -1,0 +1,36 @@
+name: CD Pipeline
+
+on:
+  push:
+    branches:
+      - main
+
+jobs:
+  deploy:
+    runs-on: ubuntu-latest
+
+    steps:
+    - name: Checkout code
+      uses: actions/checkout@v2
+
+    - name: Set up Kubernetes Kubectl
+      uses: azure/setup-kubectl@v1
+      with:
+        version: 'v1.21.0' # Use the desired version of kubectl
+
+    - name: Set up Kubeconfig
+      env:
+        KUBECONFIG: ${{ secrets.KUBECONFIG }}
+      run: echo "${KUBECONFIG}" > $HOME/.kube/config
+
+    - name: Apply Kubernetes Namespace
+      run: kubectl apply -f namespace.yaml
+
+    - name: Apply Kubernetes Deployment
+      run: kubectl apply -f deployment.yaml
+
+    - name: Apply Kubernetes Service
+      run: kubectl apply -f service.yaml
+
+    - name: Apply Kubernetes Ingress
+      run: kubectl apply -f ingress.yaml
