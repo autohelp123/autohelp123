@@ -7,6 +7,7 @@ const port = 3000;
 // Middleware to parse JSON bodies
 app.use(express.json());
 
+
 // Health check endpoint
 app.get('/api/v1/health', (req, res) => {
     res.json({
@@ -50,6 +51,15 @@ app.put('/users/:id', (req, res) => {
 app.delete('/users/:id', (req, res) => {
     const userId = parseInt(req.params.id, 10);
     res.status(204).send();
+});
+
+app.use((err, req, res, next) => {
+    if (err) {
+        return res.status(500).json({
+            message: 'Something went wrong'
+        })
+    }
+    return next()
 });
 
 if (require.main === module) {
